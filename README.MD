@@ -31,6 +31,7 @@ You can test by running
 
 - I am assuming there are only three projects in the multicast group
 - This project doesn't have capability to handle overlapping multicast groups assumes only single group
+- Not fault tolerant
 
 ## Algorithm - ISIS Algorithm
 

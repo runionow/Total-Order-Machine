@@ -54,4 +54,7 @@ public class Activity implements Serializable {
         this.table.put(m.getMessage(), m);
     }
 
+    public Map<String, Message> getBufferMessage() {
+        return table;
+    }
 }

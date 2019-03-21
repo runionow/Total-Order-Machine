@@ -8,6 +8,7 @@ import java.io.ObjectInputStream;
 import java.net.DatagramPacket;
 import java.net.InetAddress;
 import java.net.MulticastSocket;
+import java.sql.Timestamp;
 
 public class MulticastR implements Runnable {
 
@@ -19,7 +20,6 @@ public class MulticastR implements Runnable {
         this.activity = activity;
     }
 
-
     @Override
     public void run() {
         InetAddress group = null;
@@ -30,12 +30,12 @@ public class MulticastR implements Runnable {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        System.out.println("\nListening for new messages on the channel : " + activity.process_id);
 
         // Keep on listening to any multicast messages on the group
         while (true) {
             DatagramPacket packet = new DatagramPacket(buf, buf.length);
             try {
-                System.out.println("Listening for new messages on the channel");
 
                 // Waiting for the Message
                 socket.receive(packet);
@@ -44,33 +44,17 @@ public class MulticastR implements Runnable {
                 ObjectInputStream iStream = new ObjectInputStream(new ByteArrayInputStream(buf));
                 PackageHandler pkg = (PackageHandler) iStream.readObject();
 
-                // Testing the contents of the package
-                System.out.println(pkg.getPackageType() + "Hello Package");
-
-                if (pkg.getPackageType() == PackageType.BROADCAST_MESSAGE) {
-                    System.out.println("I am here");
-                    pkg.getMessage_data();
-                }
-
-
-
-                // Upon receiving the new message
-
-                // 1. Increment sequence number
-                activity.incrementSequence();
-
-                // 2. Save the message to the message buffer
-//                activity.bufferMessage();
+                // Handling the package
+                this.handlePackage(pkg);
 
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
             }
-            String received = new String(
-                    packet.getData(), 0, packet.getLength());
 
-
+            // Exit condition
+            String received = new String(packet.getData(), 0, packet.getLength());
             if ("end".equals(received)) {
                 break;
             }
@@ -81,6 +65,35 @@ public class MulticastR implements Runnable {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
         socket.close();
+    }
+
+    private void handlePackage(PackageHandler pkg) {
+
+        // Only shows message coming from the other process
+        if (pkg.getPackageType() == PackageType.BROADCAST_MESSAGE) {
+            System.out.println("[NEW MESSAGE] : " + new Timestamp(System.currentTimeMillis()));
+            System.out.println(pkg.getM().toString());
+
+            // Increment sequence number
+            activity.incrementSequence();
+
+            // Save the incoming message to the message buffer
+            activity.bufferMessage(pkg.getM());
+
+        } else if (pkg.getPackageType() == PackageType.REPLY_BROADCAST) {
+            System.out.println("[NEW REPLY MESSAGE] : " + new Timestamp(System.currentTimeMillis()));
+            // Update the sequence for that particular message in the counter
+
+            if (activity.getBufferMessage().size() == Configuration.MULTICAST_GROUP_SIZE) {
+                // deliver the message in the order
+
+            }
+
+        } else {
+            // To handle point 2 point message
+        }
+
     }
 }

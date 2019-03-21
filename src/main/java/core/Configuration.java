@@ -2,6 +2,7 @@ package core;
 
 public class Configuration {
     public final static String MULTICAST_ADDRESS = "230.0.0.0";
+    public final static int MULTICAST_GROUP_SIZE = 3;
 
     public final static void title() {
         System.out.println("***************************");
