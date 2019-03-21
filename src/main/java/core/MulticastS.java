@@ -1,11 +1,13 @@
 package core;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.ObjectOutput;
+import java.io.ObjectOutputStream;
 import java.net.*;
 
 public class MulticastS implements Runnable {
 
-    private final static String MULTICAST_ADDRESS = "230.0.0.0";
     private DatagramSocket socket;
     private InetAddress group;
     private byte[] buf;
@@ -21,7 +23,7 @@ public class MulticastS implements Runnable {
     public void run() {
         try {
             socket = new DatagramSocket();
-            group = InetAddress.getByName(MULTICAST_ADDRESS);
+            group = InetAddress.getByName(Configuration.MULTICAST_ADDRESS);
 
         } catch (SocketException e) {
             e.printStackTrace();
@@ -35,7 +37,35 @@ public class MulticastS implements Runnable {
         // 1. Increment counter
         activity.incrementCounter();
 
-        DatagramPacket packet = new DatagramPacket(buf, buf.length, group, 4446);
+        // 2. Creating a package for message
+        Message m = new Message(this.message,
+                "0",
+                "0",
+                activity.getSequence_no(),
+                false);
+
+        // 3. Save the message to the buffer
+        PackageHandler pkg = new PackageHandler(PackageType.BROADCAST_MESSAGE);
+        pkg.setM(m);
+
+        // 4. Prepare package for byte stream
+        ByteArrayOutputStream bstream = null;
+        try {
+            bstream = new ByteArrayOutputStream();
+            ObjectOutput oo = new ObjectOutputStream(bstream);
+            oo.writeObject(pkg);
+            oo.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        byte[] serializedMessage = bstream.toByteArray();
+
+
+        DatagramPacket packet = new DatagramPacket(serializedMessage,
+                serializedMessage.length,
+                group,
+                4446);
 
         try {
             socket.send(packet);

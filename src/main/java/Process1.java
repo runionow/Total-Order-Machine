@@ -1,5 +1,6 @@
 import core.Activity;
 import core.MulticastR;
+import core.MulticastS;
 
 public class Process1 {
 
@@ -14,9 +15,9 @@ public class Process1 {
         t1.start();
 
         // PLAY-GROUND
-        /**
-         * Use MulticastS to send new messages
-         */
-        Thread.sleep(2000);
+        Thread.sleep(1000);
+
+        Thread t2 = new Thread(new MulticastS("Hello", state));
+        t2.start();
     }
 }

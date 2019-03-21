@@ -37,7 +37,7 @@ Status {
 Initialization : 
     - sequence_number = 0 -> Upon recieving the broadcast message increment the sequence number
     - counter = 0 -> Upon sending the new message increment the counter 
-    - process_id = randomly generated uid
+    - process_id = manually assign some value to the host
 
 a. Send a new message :
     1. Increment the counter

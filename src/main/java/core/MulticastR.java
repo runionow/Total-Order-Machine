@@ -1,6 +1,8 @@
 package core;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.net.DatagramPacket;
 import java.net.InetAddress;
 import java.net.MulticastSocket;
@@ -21,7 +23,7 @@ public class MulticastR implements Runnable {
         InetAddress group = null;
         try {
             socket = new MulticastSocket(4446);
-            group = InetAddress.getByName("230.0.0.0");
+            group = InetAddress.getByName(Configuration.MULTICAST_ADDRESS);
             socket.joinGroup(group);
         } catch (IOException e) {
             e.printStackTrace();
@@ -30,13 +32,20 @@ public class MulticastR implements Runnable {
         // Keep on listening to any multicast messages on the group
         while (true) {
             DatagramPacket packet = new DatagramPacket(buf, buf.length);
-
             try {
                 System.out.println("Listening for new messages on the channel");
 
                 // Waiting for the Message
                 socket.receive(packet);
-                System.out.println(new String(buf));
+
+                // Unpacking the package
+                ObjectInputStream iStream = new ObjectInputStream(new ByteArrayInputStream(buf));
+                PackageHandler pkg = (PackageHandler) iStream.readObject();
+
+                // Testing the contents of the package
+                System.out.println(pkg.getPackageType() + "Hello Package");
+
+
 
                 // Upon receiving the new message
 
@@ -44,9 +53,11 @@ public class MulticastR implements Runnable {
                 activity.incrementSequence();
 
                 // 2. Save the message to the message buffer
-
+//                activity.bufferMessage();
 
             } catch (IOException e) {
+                e.printStackTrace();
+            } catch (ClassNotFoundException e) {
                 e.printStackTrace();
             }
             String received = new String(

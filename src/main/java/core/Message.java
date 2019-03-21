@@ -1,8 +1,9 @@
 package core;
 
+import java.io.Serializable;
 import java.util.UUID;
 
-public class Message {
+public class Message implements Serializable {
 
     private String message;
     private String message_id;
@@ -58,6 +59,10 @@ public class Message {
         System.out.println(this.toString());
     }
 
+    public void saveSequence(int sequence_num, int message) {
+
+    }
+
     @Override
     public String toString() {
         return "Message{" +
@@ -69,4 +74,6 @@ public class Message {
                 ", delivered=" + delivered +
                 '}';
     }
+
+
 }
