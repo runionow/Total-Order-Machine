@@ -1,5 +1,8 @@
 package core;
 
+import common.Message;
+import common.MessageR;
+
 import java.io.Serializable;
 
 public class PackageHandler implements Serializable {

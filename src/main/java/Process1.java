@@ -1,4 +1,5 @@
-import core.Activity;
+import common.Activity;
+import core.Configuration;
 import core.MulticastR;
 import core.MulticastS;
 
@@ -8,6 +9,7 @@ public class Process1 {
     public static void main(String[] args) throws InterruptedException {
 
         // Initialization
+        Configuration.title();
         Activity state = new Activity(25);
 
         // Listen to the incoming messages and update the current process state

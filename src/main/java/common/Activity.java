@@ -1,4 +1,6 @@
-package core;
+package common;
+
+import common.Message;
 
 import java.io.Serializable;
 import java.util.Map;

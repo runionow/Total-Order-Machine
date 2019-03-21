@@ -1,5 +1,7 @@
 package core;
 
+import common.Activity;
+
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -44,6 +46,11 @@ public class MulticastR implements Runnable {
 
                 // Testing the contents of the package
                 System.out.println(pkg.getPackageType() + "Hello Package");
+
+                if (pkg.getPackageType() == PackageType.BROADCAST_MESSAGE) {
+                    System.out.println("I am here");
+                    pkg.getM().toString();
+                }
 
 
 

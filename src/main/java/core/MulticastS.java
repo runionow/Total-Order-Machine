@@ -1,5 +1,8 @@
 package core;
 
+import common.Activity;
+import common.Message;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutput;
