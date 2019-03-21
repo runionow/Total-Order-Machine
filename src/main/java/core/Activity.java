@@ -48,7 +48,7 @@ public class Activity implements Serializable {
         return process_id;
     }
 
-    public int bufferMessage(Message m) {
+    public void bufferMessage(Message m) {
         this.table.put(m.getMessage(), m);
     }
 

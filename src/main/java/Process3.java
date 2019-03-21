@@ -1,24 +1,15 @@
-import org.zeromq.SocketType;
-import org.zeromq.ZContext;
-import org.zeromq.ZMQ;
+import core.Activity;
+import core.MulticastR;
 
 public class Process3 {
 
     public static void main(String[] args) {
-        try (ZContext context = new ZContext()) {
-            //  Socket to talk to server
-            ZMQ.Socket requester = context.createSocket(SocketType.REQ);
-            requester.connect("tcp://localhost:5561");
 
-            System.out.println("launch and connect client.");
+        // Initialization
+        Activity state = new Activity(27);
 
-            for (int request_nbr = 0; request_nbr < 10; request_nbr++) {
-                requester.send("Hello", 0);
-                String reply = requester.recvStr(0);
-                System.out.println(
-                        "Received reply " + request_nbr + " [" + reply + "]"
-                );
-            }
-        }
+        // Listen to the incoming messages and update the current process state
+        Thread t1 = new Thread(new MulticastR(state));
+        t1.start();
     }
 }

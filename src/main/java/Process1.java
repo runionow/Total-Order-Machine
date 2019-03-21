@@ -13,8 +13,7 @@ public class Process1 {
         Thread t1 = new Thread(new MulticastR(state));
         t1.start();
 
-
-        // Play ground for broadcasting messages
+        // PLAY-GROUND
         /**
          * Use MulticastS to send new messages
          */

@@ -16,7 +16,7 @@ public class MulticastServer {
 
         Thread.sleep(2000);
 
-        Thread t2 = new Thread(new MulticastS("New Message 1", activity));
+        Thread t2 = new Thread(new MulticastS("New Message 1", state));
         t2.start();
 
 
