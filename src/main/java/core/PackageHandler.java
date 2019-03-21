@@ -9,6 +9,7 @@ public class PackageHandler implements Serializable {
     private final PackageType pt;
     private MessageR mr;
     private Message m;
+    private String message_data;
 
     public PackageHandler(PackageType pt) {
         this.pt = pt;
@@ -27,7 +28,12 @@ public class PackageHandler implements Serializable {
     }
 
     public void setM(Message m) {
+        this.message_data = m.getMessage();
         this.m = m;
+    }
+
+    public String getMessage_data() {
+        return message_data;
     }
 
     public PackageType getPackageType() {

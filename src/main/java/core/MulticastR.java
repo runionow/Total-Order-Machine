@@ -49,7 +49,7 @@ public class MulticastR implements Runnable {
 
                 if (pkg.getPackageType() == PackageType.BROADCAST_MESSAGE) {
                     System.out.println("I am here");
-                    pkg.getM().toString();
+                    pkg.getMessage_data();
                 }
 
 

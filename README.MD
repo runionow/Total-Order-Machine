@@ -1,7 +1,38 @@
 # Total Order Machine
 
+## Introduction
 
-## IS-IS Algorithm
+Total order machine has been developed to understand the concepts of total order multicast and broadcast
+
+## Solution
+
+### Requirement
+
+- Java 8
+- IntelliJ IDE
+- Maven
+
+### Running the project 
+
+As this project has been developed for pedagogy reason i recommend to open the project in an IntelliJ IDE or any maven supported IDE, as it helps to understand more about the concept of Total Order multicast
+
+I am running the algorithm using three process where they exchange messages at random time intervals, you are allowed to modify the playground to test the capabilities of the program
+
+You can test by running 
+
+- Process1.java
+- Process2.java
+- Process3.java
+
+
+## Project Structure
+
+## Assumptions
+
+- I am assuming there are only three projects in the multicast group
+- This project doesn't have capability to handle overlapping multicast groups assumes only single group
+
+## Algorithm - ISIS Algorithm
 
 ```$xslt
 Process definition 
@@ -90,3 +121,13 @@ d. On delivering the message sendFinalSequence()
         task 3. Change status to [Delivered] from [Undeliverable]
 
 ```
+
+
+## Results 
+
+```$xslt
+Sample output goes here
+```
+
+This project has been done as a part of Distributed Systems coursework
+(C) 2019 Arun Nekkalapudi <anekkal@iu.edu>, Indiana University Bloomington.

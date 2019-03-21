@@ -51,6 +51,8 @@ public class MulticastS implements Runnable {
         PackageHandler pkg = new PackageHandler(PackageType.BROADCAST_MESSAGE);
         pkg.setM(m);
 
+        pkg.getM().toString();
+
         // 4. Prepare package for byte stream
         ByteArrayOutputStream bstream = null;
         try {
