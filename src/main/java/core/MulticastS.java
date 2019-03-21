@@ -10,11 +10,11 @@ public class MulticastS implements Runnable {
     private InetAddress group;
     private byte[] buf;
     private String message;
+    private final Activity activity;
 
-//    private byte[] message = new byte[100000];
-
-    public MulticastS(String message1) {
+    public MulticastS(String message1, Activity activity) {
         this.message = message1;
+        this.activity = activity;
     }
 
     @Override
@@ -31,21 +31,24 @@ public class MulticastS implements Runnable {
         buf = this.message.getBytes();
 
         // Sending a message
+
+        // 1. Increment counter
+        activity.incrementCounter();
+
         DatagramPacket packet = new DatagramPacket(buf, buf.length, group, 4446);
+
         try {
             socket.send(packet);
         } catch (IOException e) {
+            System.out.println("FAILED TO SEND MESSAGE");
             e.printStackTrace();
         }
 
-        // Wait for the packet
-        //        try {
-        //            DatagramPacket packet1 = new DatagramPacket(message,message.length);
-        //            socket.receive(packet1);
-        //        } catch (IOException e) {
-        //            e.printStackTrace();
-        //        }
-        //         System.out.println(message.toString());
+        // After sending the message
+        // 1. Store the message in the message buffer of the activity
+
+
+
 
         socket.close();
     }

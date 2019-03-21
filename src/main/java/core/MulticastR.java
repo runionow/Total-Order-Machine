@@ -9,6 +9,12 @@ public class MulticastR implements Runnable {
 
     private MulticastSocket socket = null;
     private byte[] buf = new byte[100000];
+    private final Activity activity;
+
+    public MulticastR(Activity activity) {
+        this.activity = activity;
+    }
+
 
     @Override
     public void run() {
@@ -23,20 +29,22 @@ public class MulticastR implements Runnable {
 
         // Keep on listening to any multicast messages on the group
         while (true) {
-            String message = "Hello";
             DatagramPacket packet = new DatagramPacket(buf, buf.length);
 
             try {
-                System.out.println("Waiting for the incoming messages !");
+                System.out.println("Listening for new messages on the channel");
 
                 // Waiting for the Message
                 socket.receive(packet);
                 System.out.println(new String(buf));
 
-//                 REPLY BACK
-                message += " World";
-                DatagramPacket packet1 = new DatagramPacket(message.getBytes(), message.getBytes().length, group, 4446);
-                socket.send(packet1);
+                // Upon receiving the new message
+
+                // 1. Increment sequence number
+                activity.incrementSequence();
+
+                // 2. Save the message to the message buffer
+
 
             } catch (IOException e) {
                 e.printStackTrace();

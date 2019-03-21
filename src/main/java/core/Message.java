@@ -1,8 +1,11 @@
 package core;
 
+import java.util.UUID;
+
 public class Message {
 
     private String message;
+    private String message_id;
     private String id;
     private String recieve_id;
     private int sequence_num;
@@ -14,6 +17,7 @@ public class Message {
         this.recieve_id = recieve_id;
         this.sequence_num = sequence_num;
         this.delivered = delivered;
+        message_id = UUID.randomUUID().toString();
     }
 
     public String getRecieve_id() {
@@ -49,10 +53,16 @@ public class Message {
         return id;
     }
 
+    public void updateStatus() {
+        this.delivered = true;
+        System.out.println(this.toString());
+    }
+
     @Override
     public String toString() {
         return "Message{" +
                 "message='" + message + '\'' +
+                ", message_id='" + message_id + '\'' +
                 ", id='" + id + '\'' +
                 ", recieve_id='" + recieve_id + '\'' +
                 ", sequence_num=" + sequence_num +
