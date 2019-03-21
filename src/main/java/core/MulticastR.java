@@ -1,6 +1,7 @@
 package core;
 
 import common.Activity;
+import common.Message;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -9,6 +10,8 @@ import java.net.DatagramPacket;
 import java.net.InetAddress;
 import java.net.MulticastSocket;
 import java.sql.Timestamp;
+
+import static core.PackageType.*;
 
 public class MulticastR implements Runnable {
 
@@ -72,20 +75,29 @@ public class MulticastR implements Runnable {
     private void handlePackage(PackageHandler pkg) {
 
         // Only shows message coming from the other process
-        if (pkg.getPackageType() == PackageType.BROADCAST_MESSAGE) {
+        if (pkg.getPackageType() == BROADCAST_MESSAGE) {
             System.out.println("[NEW MESSAGE] : " + new Timestamp(System.currentTimeMillis()));
             System.out.println(pkg.getM().toString());
 
             // Increment sequence number
             activity.incrementSequence();
 
-            // Save the incoming message to the message buffer
+            // Save the incoming message to the message buffer - Verify
             activity.bufferMessage(pkg.getM());
+
+            // Send Reply Sequence
+            Message m = pkg.getM();
+            m.setSequence_num(activity.getSequence_no());
+            m.setSender_id(activity.getProcess_id());
+
+            PackageHandler newPkg = new PackageHandler(REPLY_BROADCAST);
+            newPkg.setMr(m);
 
         } else if (pkg.getPackageType() == PackageType.REPLY_BROADCAST) {
             System.out.println("[NEW REPLY MESSAGE] : " + new Timestamp(System.currentTimeMillis()));
             // Update the sequence for that particular message in the counter
 
+            // Sending final sequence
             if (activity.getBufferMessage().size() == Configuration.MULTICAST_GROUP_SIZE) {
                 // deliver the message in the order
 

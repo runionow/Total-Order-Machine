@@ -7,26 +7,26 @@ public class Message implements Serializable {
 
     private String message;
     private String message_id;
-    private String id;
-    private String recieve_id;
+    private int sender_id;
+    private int counter_num;
     private int sequence_num;
     private boolean delivered = false;
 
-    public Message(String message, String id, String recieve_id, int sequence_num, boolean delivered) {
+    public Message(String message, int sender_id, int counter_num, int sequence_num, boolean delivered) {
         this.message = message;
-        this.id = id;
-        this.recieve_id = recieve_id;
+        this.counter_num = counter_num;
+        this.sender_id = sender_id;
         this.sequence_num = sequence_num;
         this.delivered = delivered;
         message_id = UUID.randomUUID().toString();
     }
 
-    public String getRecieve_id() {
-        return recieve_id;
+    public int getSender_id() {
+        return sender_id;
     }
 
-    public void setRecieve_id(String recieve_id) {
-        this.recieve_id = recieve_id;
+    public void setSender_id(int recieve_id) {
+        this.sender_id = recieve_id;
     }
 
     public int getSequence_num() {
@@ -45,13 +45,16 @@ public class Message implements Serializable {
         this.delivered = delivered;
     }
 
-
     public String getMessage() {
         return message;
     }
 
-    public String getId() {
-        return id;
+    public int getCounter_num() {
+        return counter_num;
+    }
+
+    public void setCounter_num(int counter_num) {
+        this.counter_num = counter_num;
     }
 
     public void updateStatus() {
@@ -59,21 +62,15 @@ public class Message implements Serializable {
         System.out.println(this.toString());
     }
 
-    public void saveSequence(int sequence_num, int message) {
-
-    }
-
     @Override
     public String toString() {
         return "Message{" +
                 "message='" + message + '\'' +
                 ", message_id='" + message_id + '\'' +
-                ", id='" + id + '\'' +
-                ", recieve_id='" + recieve_id + '\'' +
+                ", recieve_id=" + sender_id +
+                ", counter_num=" + counter_num +
                 ", sequence_num=" + sequence_num +
                 ", delivered=" + delivered +
                 '}';
     }
-
-
 }

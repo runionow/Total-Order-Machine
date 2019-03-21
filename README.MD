@@ -18,7 +18,7 @@ As this project has been developed for pedagogy reason i recommend to open the p
 
 I am running the algorithm using three process where they exchange messages at random time intervals, you are allowed to modify the playground to test the capabilities of the program
 
-You can test by running 
+the algorithm can be testedt by running the following java programs on intelliJIDE
 
 - Process1.java
 - Process2.java
@@ -32,6 +32,7 @@ You can test by running
 - I am assuming there are only three projects in the multicast group
 - This project doesn't have capability to handle overlapping multicast groups assumes only single group
 - Not fault tolerant
+- Fixed set of process
 
 ## Algorithm - ISIS Algorithm
 

@@ -42,10 +42,10 @@ public class MulticastS implements Runnable {
 
         // 2. Creating a package for message
         Message m = new Message(this.message,
-                "0",
-                "0",
-                activity.getSequence_no(),
-                false);
+                activity.getProcess_id(),
+                activity.getCounter(),
+                activity.getSequence_no()
+                , false);
 
         // 3. Save the message to the buffer
         PackageHandler pkg = new PackageHandler(PackageType.BROADCAST_MESSAGE);
