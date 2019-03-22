@@ -1,7 +1,7 @@
 package core;
 
 import common.Activity;
-import common.Message;
+import common.MessageR;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -33,7 +33,7 @@ public class MulticastR implements Runnable {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        System.out.println("\nListening for new messages on the channel : " + activity.process_id);
+        System.out.println("\n[PROCESS_ID] : " + activity.process_id);
 
         // Keep on listening to any multicast messages on the group
         while (true) {
@@ -74,10 +74,12 @@ public class MulticastR implements Runnable {
 
     private void handlePackage(PackageHandler pkg) {
 
+
         // Only shows message coming from the other process
-        if (pkg.getPackageType() == BROADCAST_MESSAGE) {
-            System.out.println("[NEW MESSAGE] : " + new Timestamp(System.currentTimeMillis()));
-            System.out.println(pkg.getM().toString());
+        if (pkg.getPackageType() == BROADCAST_MESSAGE && !activity.getBufferMessage().containsKey(pkg.getM().getMessage_id())) {
+            System.out.println("[NEW MESSAGE RECIEVED] : " + new Timestamp(System.currentTimeMillis()) + pkg.getM().toString());
+
+
 
             // Increment sequence number
             activity.incrementSequence();
@@ -86,20 +88,18 @@ public class MulticastR implements Runnable {
             activity.bufferMessage(pkg.getM());
 
             // Send Reply Sequence
-            Message m = pkg.getM();
-            m.setSequence_num(activity.getSequence_no());
-            m.setSender_id(activity.getProcess_id());
+            MessageR m1 = new MessageR(pkg.getM().getMessage_id(), activity.getSequence_no(), activity.getProcess_id());
+            MulticastS ms = new MulticastS(m1);
+            ms.sendResponseMessage();
 
-            PackageHandler newPkg = new PackageHandler(REPLY_BROADCAST);
-            newPkg.setMr(m);
-
-        } else if (pkg.getPackageType() == PackageType.REPLY_BROADCAST) {
-            System.out.println("[NEW REPLY MESSAGE] : " + new Timestamp(System.currentTimeMillis()));
-            // Update the sequence for that particular message in the counter
+        } else if (pkg.getPackageType() == PackageType.REPLY_BROADCAST && pkg.getMr().getProcess_id() != activity.process_id) {
+            System.out.println("[NEW REPLY MESSAGE] : " + new Timestamp(System.currentTimeMillis()) + " " + pkg.getMr().toString());
 
             // Sending final sequence
-            if (activity.getBufferMessage().size() == Configuration.MULTICAST_GROUP_SIZE) {
-                // deliver the message in the order
+            if (activity.getBufferMessage().size() == Configuration.MULTICAST_GROUP_SIZE - 1) {
+                // If we have recieved all the sequence numbers
+
+
 
             }
 

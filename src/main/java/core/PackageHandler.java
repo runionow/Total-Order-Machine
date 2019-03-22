@@ -7,7 +7,7 @@ import java.io.Serializable;
 
 public class PackageHandler implements Serializable {
     private final PackageType pt;
-    private Message mr;
+    private MessageR mr;
     private Message m;
     private String message_data;
 
@@ -15,11 +15,11 @@ public class PackageHandler implements Serializable {
         this.pt = pt;
     }
 
-    public Message getMr() {
+    public MessageR getMr() {
         return mr;
     }
 
-    public void setMr(Message mr) {
+    public void setMr(MessageR mr) {
         this.mr = mr;
     }
 

@@ -18,7 +18,7 @@ public class Message implements Serializable {
         this.sender_id = sender_id;
         this.sequence_num = sequence_num;
         this.delivered = delivered;
-        message_id = UUID.randomUUID().toString();
+        this.message_id = UUID.randomUUID().toString();
     }
 
     public int getSender_id() {
@@ -27,6 +27,10 @@ public class Message implements Serializable {
 
     public void setSender_id(int recieve_id) {
         this.sender_id = recieve_id;
+    }
+
+    public String getMessage_id() {
+        return message_id;
     }
 
     public int getSequence_num() {

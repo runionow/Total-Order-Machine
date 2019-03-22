@@ -6,26 +6,35 @@ import java.io.Serializable;
  * Reply Message
  */
 public class MessageR implements Serializable {
-    private final int message_id;
     private final int sequence_no;
-    private final int process_id;
     private final String message_uid;
+    private final int process_id;
 
 
-    public MessageR(int message_id, int sequence_no, int process_id, String message_uid) {
-        this.message_id = message_id;
+    public MessageR(String message_uid, int sequence_no, int process_id) {
         this.sequence_no = sequence_no;
-        this.process_id = process_id;
         this.message_uid = message_uid;
+        this.process_id = process_id;
+    }
+
+    public int getSequence_no() {
+        return sequence_no;
+    }
+
+    public String getMessage_uid() {
+        return message_uid;
+    }
+
+    public int getProcess_id() {
+        return process_id;
     }
 
     @Override
     public String toString() {
         return "MessageR{" +
-                "message_id=" + message_id +
-                ", sequence_no=" + sequence_no +
-                ", process_id=" + process_id +
+                "sequence_no=" + sequence_no +
                 ", message_uid='" + message_uid + '\'' +
+                ", process_id=" + process_id +
                 '}';
     }
 }
