@@ -2,7 +2,11 @@
 
 ## Introduction
 
-Total order machine has been developed to understand the concepts of total order multicast and broadcast
+Total order machine has been developed to understand the concepts of total order multicast and broadcast, this is a plain vanilla implementation of Total Order Machine using UDP sockets and IS-IS total order algorithm 
+
+ISIS total order takes an decentralized approach unlike using single sequencer at the central level for orchestrating the messages and is capable of handling both multicast and p2p messages
+
+I have added some randomness to the project to test various scenarios (by adding unncessary sleeps while multicasting and recieving the messages)
 
 ## Solution
 
@@ -18,23 +22,32 @@ As this project has been developed for pedagogy reason i recommend to open the p
 
 I am running the algorithm using three process where they exchange messages at random time intervals, you are allowed to modify the playground to test the capabilities of the program
 
-the algorithm can be testedt by running the following java programs on intelliJIDE
+the algorithm can be testedt by running the following java programs on intelliJIDE 
+
 
 - Process1.java
 - Process2.java
 - Process3.java
 
+**Dirty work-around** : Please start all the process under 7000ms (because i have used UDP sockets for broadcasting and they dont have any idea about the process on the group)
 
 ## Project Structure
 
 ## Assumptions
 
-- I am assuming there are only three projects in the multicast group
+- I am assuming there are only three process(s) in the multicast group
 - This project doesn't have capability to handle overlapping multicast groups assumes only single group
 - Not fault tolerant
 - Fixed set of process
+- ISIS is capable of handling p2p messages 
 
 ## Algorithm - ISIS Algorithm
+
+<img src="https://image.slidesharecdn.com/chapter11-141111075918-conversion-gate02/95/chapter-11-20-638.jpg?cb=1415693278" alt="Smiley face" >
+<br>
+<figcaption>This image had been taken from Distributed Systems: Concepts and Design</figcaption>
+<br>
+<br>
 
 ```$xslt
 Process definition 
@@ -124,13 +137,38 @@ d. On delivering the message sendFinalSequence()
 
 ```
 
-## Breaking the ties
+For more information regarding the algorithm please check the artifacts folder of this repository, i have included the details of the implementation of the algorithm
+
+## Breaking the Ties
 
 There is a possibility of ties while implementing this solution and handling carefully will result in optimal total order solution at the end
 
 More information about the ties has been discussed in here.
 
 
+#### Tie 1
+
+```$xslt
+ Choose smallest possible value for process_id if there are multiple suggesting the same sequence number
+ while choosing the value with same sequence number
+```
+
+
+#### Tie 2 
+```$xslt
+Sort such that message with smallest sequence number is at the head of the delivery queue
+
+If two sequence numbers are the same then
+    place any undeliverable messages at the head
+    to break further ties, place message with smallest suggesting process # at the head
+end if
+
+While message at head of queue has status deliverable do
+    deliver the message at the head of the queue 
+    remove this message from the queue
+end while
+
+```
 
 ## Results 
 

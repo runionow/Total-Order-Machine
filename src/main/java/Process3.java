@@ -16,7 +16,7 @@ public class Process3 {
         t1.start();
 
         // PLAY-GROUND
-        Thread.sleep(5000);
+        Thread.sleep(7000);
 
         Thread t2 = new Thread(new MulticastS("Arun", state));
         t2.start();
