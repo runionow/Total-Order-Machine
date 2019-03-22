@@ -1,6 +1,8 @@
 package common;
 
 import java.io.Serializable;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.UUID;
 
 public class Message implements Serializable {
@@ -11,6 +13,7 @@ public class Message implements Serializable {
     private int counter_num;
     private int sequence_num;
     private boolean delivered = false;
+    private List<MessageR> reply = new LinkedList<>();
 
     public Message(String message, int sender_id, int counter_num, int sequence_num, boolean delivered) {
         this.message = message;
@@ -64,6 +67,14 @@ public class Message implements Serializable {
     public void updateStatus() {
         this.delivered = true;
         System.out.println(this.toString());
+    }
+
+    public void addReply(MessageR mr) {
+        this.reply.add(mr);
+    }
+
+    public List<MessageR> getAllReplies() {
+        return this.reply;
     }
 
     @Override

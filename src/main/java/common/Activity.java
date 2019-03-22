@@ -15,6 +15,7 @@ public class Activity implements Serializable {
     // Initializing the counter values
     private AtomicInteger sequence_no = new AtomicInteger(0);
     private AtomicInteger counter = new AtomicInteger(0);
+    private Set<String> sent_messages = new HashSet<>();
     private Map<String, Message> table;
     public final int process_id;
 
@@ -79,6 +80,15 @@ public class Activity implements Serializable {
         }
 
         return finalList;
+    }
+
+    public void sentMessageId(String message_id) {
+        this.sent_messages.add(message_id);
+
+    }
+
+    public boolean sentMessageContains(String message_id) {
+        return this.sent_messages.contains(message_id);
     }
 
     public Map<String, Message> getBufferMessage() {

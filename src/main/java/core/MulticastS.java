@@ -73,6 +73,8 @@ public class MulticastS implements Runnable {
         // 4. Store the message in the message buffer of the activity
         activity.getBufferMessage().put(m.getMessage_id(), m);
 
+        // 5. Updating the messages sent by the activity
+        activity.sentMessageId(m.getMessage_id());
 
         try {
             Thread.sleep((long) (Math.random() * 1000));

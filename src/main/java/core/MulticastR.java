@@ -1,6 +1,7 @@
 package core;
 
 import common.Activity;
+import common.Message;
 import common.MessageR;
 
 import java.io.ByteArrayInputStream;
@@ -10,9 +11,15 @@ import java.net.DatagramPacket;
 import java.net.InetAddress;
 import java.net.MulticastSocket;
 import java.sql.Timestamp;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 import static core.PackageType.*;
 
+/**
+ * MulticastR is used for sending the data from the
+ */
 public class MulticastR implements Runnable {
 
     private MulticastSocket socket = null;
@@ -79,8 +86,6 @@ public class MulticastR implements Runnable {
         if (pkg.getPackageType() == BROADCAST_MESSAGE && !activity.getBufferMessage().containsKey(pkg.getM().getMessage_id())) {
             System.out.println("[NEW MESSAGE RECIEVED] : " + new Timestamp(System.currentTimeMillis()) + pkg.getM().toString());
 
-
-
             // Increment sequence number
             activity.incrementSequence();
 
@@ -92,14 +97,34 @@ public class MulticastR implements Runnable {
             MulticastS ms = new MulticastS(m1);
             ms.sendResponseMessage();
 
-        } else if (pkg.getPackageType() == PackageType.REPLY_BROADCAST && pkg.getMr().getProcess_id() != activity.process_id) {
-            System.out.println("[NEW REPLY MESSAGE] : " + new Timestamp(System.currentTimeMillis()) + " " + pkg.getMr().toString());
+        } else if (pkg.getPackageType() == PackageType.REPLY_BROADCAST && activity.sentMessageContains(pkg.getMr().getMessage_uid())) {
+
+            // Track the message
+            System.out.println("[NEW REPLY MESSAGE RECIEVED] : " + new Timestamp(System.currentTimeMillis()) + " " + pkg.getMr().toString());
+            Message m = activity.getBufferMessage().get(pkg.getMr().getMessage_uid());
+            m.addReply(pkg.getMr());
 
             // Sending final sequence
-            if (activity.getBufferMessage().size() == Configuration.MULTICAST_GROUP_SIZE - 1) {
-                // If we have recieved all the sequence numbers
+            if (m.getAllReplies().size() == Configuration.MULTICAST_GROUP_SIZE - 1) {
+                System.out.println("All the feedback messages have been recieved");
+                // After recieving all the messages
 
+                // From the given list choose the highest possible sequence number
+                // If there is a tie between two processor having the same sequence number then
+                List<MessageR> mr = m.getAllReplies();
+                Collections.sort(mr, new Comparator<MessageR>() {
+                    @Override
+                    public int compare(MessageR o1, MessageR o2) {
+                        Integer s1 = o1.getSequence_no();
+                        Integer s2 = o2.getSequence_no();
 
+                        return s2.compareTo(s1);
+                    }
+                });
+
+                // Choose the
+
+                System.out.println(mr);
 
             }
 
