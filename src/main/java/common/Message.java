@@ -12,6 +12,8 @@ public class Message implements Serializable {
     private int sender_id;
     private int counter_num;
     private int sequence_num;
+    private int proposed_sequence_no;
+    private int sugestedBypid;
     private boolean delivered = false;
     private List<MessageR> reply = new LinkedList<>();
 
@@ -22,6 +24,22 @@ public class Message implements Serializable {
         this.sequence_num = sequence_num;
         this.delivered = delivered;
         this.message_id = UUID.randomUUID().toString();
+    }
+
+    public int getProposed_sequence_no() {
+        return proposed_sequence_no;
+    }
+
+    public void setProposed_sequence_no(int proposed_sequence_no) {
+        this.proposed_sequence_no = proposed_sequence_no;
+    }
+
+    public int getSugestedBypid() {
+        return sugestedBypid;
+    }
+
+    public void setSugestedBypid(int sugestedBypid) {
+        this.sugestedBypid = sugestedBypid;
     }
 
     public int getSender_id() {

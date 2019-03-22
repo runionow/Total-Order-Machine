@@ -3,6 +3,7 @@ package core;
 import common.Activity;
 import common.Message;
 import common.MessageR;
+import common.MessageS;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -11,9 +12,7 @@ import java.net.DatagramPacket;
 import java.net.InetAddress;
 import java.net.MulticastSocket;
 import java.sql.Timestamp;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 import static core.PackageType.*;
 
@@ -84,7 +83,7 @@ public class MulticastR implements Runnable {
 
         // Only shows message coming from the other process
         if (pkg.getPackageType() == BROADCAST_MESSAGE && !activity.getBufferMessage().containsKey(pkg.getM().getMessage_id())) {
-            System.out.println("[NEW MESSAGE RECIEVED] : " + new Timestamp(System.currentTimeMillis()) + pkg.getM().toString());
+            System.out.println("[NEW MESSAGE RECIEVED] : " + new Timestamp(System.currentTimeMillis()) + " " + pkg.getM().toString());
 
             // Increment sequence number
             activity.incrementSequence();
@@ -104,32 +103,89 @@ public class MulticastR implements Runnable {
             Message m = activity.getBufferMessage().get(pkg.getMr().getMessage_uid());
             m.addReply(pkg.getMr());
 
-            // Sending final sequence
+            // // After recieving all the messages - Send final sequence
             if (m.getAllReplies().size() == Configuration.MULTICAST_GROUP_SIZE - 1) {
                 System.out.println("All the feedback messages have been recieved");
-                // After recieving all the messages
+
 
                 // From the given list choose the highest possible sequence number
-                // If there is a tie between two processor having the same sequence number then
                 List<MessageR> mr = m.getAllReplies();
+
+                // Choose the highest sequence number - Breaking Ties
+                // if there is a tie keep the element with lowest process_id on the top
                 Collections.sort(mr, new Comparator<MessageR>() {
                     @Override
                     public int compare(MessageR o1, MessageR o2) {
                         Integer s1 = o1.getSequence_no();
                         Integer s2 = o2.getSequence_no();
 
+                        if (o1.getSequence_no() == o2.getSequence_no()) {
+                            return o1.getProcess_id() - o2.getProcess_id();
+                        }
                         return s2.compareTo(s1);
                     }
                 });
 
-                // Choose the
+                System.out.println("Propose Sequence No : " + mr.get(0));
 
-                System.out.println(mr);
+                // Cast the sequence to all the messages
+                PackageHandler pkgSeq = new PackageHandler(FINAL_SEQUENCE);
+                MessageS ms = new MessageS(pkg.getMr().getMessage_uid(), mr.get(0).getProcess_id(), mr.get(0).getSequence_no());
+                MulticastS send_final_sequence = new MulticastS(ms);
+                send_final_sequence.sendFinalSequence();
 
             }
 
-        } else {
-            // To handle point 2 point message
+        } else if (pkg.getPackageType() == FINAL_SEQUENCE) {
+            // Update Sequencer
+            System.out.println("Final sequence has been received");
+
+            activity.setSequence_no(Math.max(pkg.getMs().getSuggested_sno(), activity.getSequence_no()));
+            Map<String, Message> table = activity.getBufferMessage();
+
+            Message m = table.get(pkg.getMs().getMessage_id());
+            System.out.println("[MESSAGE TO BE UPDATED]" + m.toString());
+
+            System.out.println("[FINAL_SEQUENCE] : " + pkg.getMs().toString());
+
+            // Update the proposed sequence number
+//            m.setProposed_sequence_no(pkg.getMs().getSuggested_sno());
+            m.setSequence_num(pkg.getMs().getSuggested_sno());
+
+            // Change the process that suggested sequence number
+            m.setSugestedBypid(pkg.getMs().getSuggested_pid());
+
+            // Change delivery status
+            m.setDelivered(true);
+
+            System.out.println("All table values : " + table.values() + " " + table.size());
+            List<Message> final_List = new ArrayList<>(table.values());
+            System.out.println(final_List);
+
+            // Sorting - smallest sequence number on the head
+            // If there is a tie
+            Collections.sort(final_List, new Comparator<Message>() {
+                @Override
+                public int compare(Message o1, Message o2) {
+                    Integer s1 = o1.getSequence_num();
+                    Integer s2 = o2.getSequence_num();
+
+                    if (o1.getSequence_num() == o2.getSequence_num()) {
+                        if (o1.isDelivered() == o2.isDelivered()) {
+                            return Integer.compare(o1.getSugestedBypid(), o2.getSugestedBypid());
+                        }
+                        return Boolean.compare(o1.isDelivered(), o2.isDelivered());
+                    }
+
+                    return s1.compareTo(s2);
+                }
+            });
+
+
+            while (!final_List.isEmpty() && final_List.get(0).isDelivered()) {
+                System.out.println("Delivered : " + final_List.get(0).toString());
+                final_List.remove(0);
+            }
         }
 
     }

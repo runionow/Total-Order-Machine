@@ -124,12 +124,180 @@ d. On delivering the message sendFinalSequence()
 
 ```
 
+## Breaking the ties
+
+There is a possibility of ties while implementing this solution and handling carefully will result in optimal total order solution at the end
+
+More information about the ties has been discussed in here.
+
+
 
 ## Results 
 
+This is an exhaustive log for each process in the multicast group, for the sake of experiment i have added three logs to showcase the results of the solution 
+
+#### Output at Process 1
 ```$xslt
-Sample output goes here
+"C:\Program Files\Java\jdk1.8.0_181\bin\java.exe" "-javaagent:C:\Program Files\JetBrains\IntelliJ IDEA 2018.3.4\lib\idea_rt.jar=50218:C:\Program Files\JetBrains\IntelliJ IDEA 2018.3.4\bin" -Dfile.encoding=UTF-8 -classpath "C:\Program Files\Java\jdk1.8.0_181\jre\lib\charsets.jar;C:\Program Files\Java\jdk1.8.0_181\jre\lib\deploy.jar;C:\Program Files\Java\jdk1.8.0_181\jre\lib\ext\access-bridge-64.jar;C:\Program Files\Java\jdk1.8.0_181\jre\lib\ext\cldrdata.jar;C:\Program Files\Java\jdk1.8.0_181\jre\lib\ext\dnsns.jar;C:\Program Files\Java\jdk1.8.0_181\jre\lib\ext\jaccess.jar;C:\Program Files\Java\jdk1.8.0_181\jre\lib\ext\jfxrt.jar;C:\Program Files\Java\jdk1.8.0_181\jre\lib\ext\localedata.jar;C:\Program Files\Java\jdk1.8.0_181\jre\lib\ext\nashorn.jar;C:\Program Files\Java\jdk1.8.0_181\jre\lib\ext\sunec.jar;C:\Program Files\Java\jdk1.8.0_181\jre\lib\ext\sunjce_provider.jar;C:\Program Files\Java\jdk1.8.0_181\jre\lib\ext\sunmscapi.jar;C:\Program Files\Java\jdk1.8.0_181\jre\lib\ext\sunpkcs11.jar;C:\Program Files\Java\jdk1.8.0_181\jre\lib\ext\zipfs.jar;C:\Program Files\Java\jdk1.8.0_181\jre\lib\javaws.jar;C:\Program Files\Java\jdk1.8.0_181\jre\lib\jce.jar;C:\Program Files\Java\jdk1.8.0_181\jre\lib\jfr.jar;C:\Program Files\Java\jdk1.8.0_181\jre\lib\jfxswt.jar;C:\Program Files\Java\jdk1.8.0_181\jre\lib\jsse.jar;C:\Program Files\Java\jdk1.8.0_181\jre\lib\management-agent.jar;C:\Program Files\Java\jdk1.8.0_181\jre\lib\plugin.jar;C:\Program Files\Java\jdk1.8.0_181\jre\lib\resources.jar;C:\Program Files\Java\jdk1.8.0_181\jre\lib\rt.jar;D:\gitrepos\TotalOrderMain\target\classes;C:\Users\Arun Nekkalapudi\.m2\repository\org\zeromq\jeromq\0.5.1-SNAPSHOT\jeromq-0.5.1-20190219.022537-1.jar;C:\Users\Arun Nekkalapudi\.m2\repository\eu\neilalexander\jnacl\1.0.0\jnacl-1.0.0.jar" Process1
+******************************
+Welcome to Total-Order-Machine
+******************************
+
+This project has been done as a part of Distributed Systems coursework
+(C) 2019 Arun Nekkalapudi <anekkal@iu.edu>, Indiana University Bloomington.
+
+[PROCESS_ID] : 25
+[MESSAGE MULTICAST] : 2019-03-22 17:51:04.248 Message{message='there', message_id='9477948c-cb28-47f3-8386-15e8a3a79fc9', recieve_id=25, counter_num=2, sequence_num=0, delivered=false}
+[MESSAGE MULTICAST] : 2019-03-22 17:51:04.248 Message{message='Hello', message_id='0137c284-66a6-47e9-97e4-c52d810cd54e', recieve_id=25, counter_num=2, sequence_num=0, delivered=false}
+[NEW REPLY MESSAGE RECIEVED] : 2019-03-22 17:51:05.048 MessageR{sequence_no=1, message_uid='0137c284-66a6-47e9-97e4-c52d810cd54e', process_id=27}
+[NEW REPLY MESSAGE RECIEVED] : 2019-03-22 17:51:05.258 MessageR{sequence_no=1, message_uid='0137c284-66a6-47e9-97e4-c52d810cd54e', process_id=26}
+All the feedback messages have been recieved
+Propose Sequence No : MessageR{sequence_no=1, message_uid='0137c284-66a6-47e9-97e4-c52d810cd54e', process_id=26}
+MessageS{message_id='0137c284-66a6-47e9-97e4-c52d810cd54e', suggested_pid=26, suggested_sno=1}
+Final sequence has been received
+[MESSAGE TO BE UPDATED]Message{message='Hello', message_id='0137c284-66a6-47e9-97e4-c52d810cd54e', recieve_id=25, counter_num=2, sequence_num=0, delivered=false}
+[FINAL_SEQUENCE] : MessageS{message_id='0137c284-66a6-47e9-97e4-c52d810cd54e', suggested_pid=26, suggested_sno=1}
+All table values : [Message{message='there', message_id='9477948c-cb28-47f3-8386-15e8a3a79fc9', recieve_id=25, counter_num=2, sequence_num=0, delivered=false}, Message{message='Hello', message_id='0137c284-66a6-47e9-97e4-c52d810cd54e', recieve_id=25, counter_num=2, sequence_num=1, delivered=true}] 2
+[Message{message='there', message_id='9477948c-cb28-47f3-8386-15e8a3a79fc9', recieve_id=25, counter_num=2, sequence_num=0, delivered=false}, Message{message='Hello', message_id='0137c284-66a6-47e9-97e4-c52d810cd54e', recieve_id=25, counter_num=2, sequence_num=1, delivered=true}]
+[NEW REPLY MESSAGE RECIEVED] : 2019-03-22 17:51:05.273 MessageR{sequence_no=2, message_uid='9477948c-cb28-47f3-8386-15e8a3a79fc9', process_id=27}
+[NEW REPLY MESSAGE RECIEVED] : 2019-03-22 17:51:05.98 MessageR{sequence_no=2, message_uid='9477948c-cb28-47f3-8386-15e8a3a79fc9', process_id=26}
+All the feedback messages have been recieved
+Propose Sequence No : MessageR{sequence_no=2, message_uid='9477948c-cb28-47f3-8386-15e8a3a79fc9', process_id=26}
+MessageS{message_id='9477948c-cb28-47f3-8386-15e8a3a79fc9', suggested_pid=26, suggested_sno=2}
+Final sequence has been received
+[MESSAGE TO BE UPDATED]Message{message='there', message_id='9477948c-cb28-47f3-8386-15e8a3a79fc9', recieve_id=25, counter_num=2, sequence_num=0, delivered=false}
+[FINAL_SEQUENCE] : MessageS{message_id='9477948c-cb28-47f3-8386-15e8a3a79fc9', suggested_pid=26, suggested_sno=2}
+All table values : [Message{message='there', message_id='9477948c-cb28-47f3-8386-15e8a3a79fc9', recieve_id=25, counter_num=2, sequence_num=2, delivered=true}, Message{message='Hello', message_id='0137c284-66a6-47e9-97e4-c52d810cd54e', recieve_id=25, counter_num=2, sequence_num=1, delivered=true}] 2
+[Message{message='there', message_id='9477948c-cb28-47f3-8386-15e8a3a79fc9', recieve_id=25, counter_num=2, sequence_num=2, delivered=true}, Message{message='Hello', message_id='0137c284-66a6-47e9-97e4-c52d810cd54e', recieve_id=25, counter_num=2, sequence_num=1, delivered=true}]
+Delivered : Message{message='Hello', message_id='0137c284-66a6-47e9-97e4-c52d810cd54e', recieve_id=25, counter_num=2, sequence_num=1, delivered=true}
+Delivered : Message{message='there', message_id='9477948c-cb28-47f3-8386-15e8a3a79fc9', recieve_id=25, counter_num=2, sequence_num=2, delivered=true}
+[NEW MESSAGE RECIEVED] : 2019-03-22 17:51:07.142 Message{message='World', message_id='5d4e3066-703a-4cb1-8458-f86fea5a35a4', recieve_id=26, counter_num=1, sequence_num=2, delivered=false}
+Final sequence has been received
+[MESSAGE TO BE UPDATED]Message{message='World', message_id='5d4e3066-703a-4cb1-8458-f86fea5a35a4', recieve_id=26, counter_num=1, sequence_num=2, delivered=false}
+[FINAL_SEQUENCE] : MessageS{message_id='5d4e3066-703a-4cb1-8458-f86fea5a35a4', suggested_pid=25, suggested_sno=3}
+All table values : [Message{message='there', message_id='9477948c-cb28-47f3-8386-15e8a3a79fc9', recieve_id=25, counter_num=2, sequence_num=2, delivered=true}, Message{message='Hello', message_id='0137c284-66a6-47e9-97e4-c52d810cd54e', recieve_id=25, counter_num=2, sequence_num=1, delivered=true}, Message{message='World', message_id='5d4e3066-703a-4cb1-8458-f86fea5a35a4', recieve_id=26, counter_num=1, sequence_num=3, delivered=true}] 3
+[Message{message='there', message_id='9477948c-cb28-47f3-8386-15e8a3a79fc9', recieve_id=25, counter_num=2, sequence_num=2, delivered=true}, Message{message='Hello', message_id='0137c284-66a6-47e9-97e4-c52d810cd54e', recieve_id=25, counter_num=2, sequence_num=1, delivered=true}, Message{message='World', message_id='5d4e3066-703a-4cb1-8458-f86fea5a35a4', recieve_id=26, counter_num=1, sequence_num=3, delivered=true}]
+Delivered : Message{message='Hello', message_id='0137c284-66a6-47e9-97e4-c52d810cd54e', recieve_id=25, counter_num=2, sequence_num=1, delivered=true}
+Delivered : Message{message='there', message_id='9477948c-cb28-47f3-8386-15e8a3a79fc9', recieve_id=25, counter_num=2, sequence_num=2, delivered=true}
+Delivered : Message{message='World', message_id='5d4e3066-703a-4cb1-8458-f86fea5a35a4', recieve_id=26, counter_num=1, sequence_num=3, delivered=true}
+[NEW MESSAGE RECIEVED] : 2019-03-22 17:51:09.851 Message{message='Arun', message_id='fec264bc-bf08-4fb4-91de-f180546d67e8', recieve_id=27, counter_num=1, sequence_num=3, delivered=false}
+Final sequence has been received
+[MESSAGE TO BE UPDATED]Message{message='Arun', message_id='fec264bc-bf08-4fb4-91de-f180546d67e8', recieve_id=27, counter_num=1, sequence_num=3, delivered=false}
+[FINAL_SEQUENCE] : MessageS{message_id='fec264bc-bf08-4fb4-91de-f180546d67e8', suggested_pid=25, suggested_sno=4}
+All table values : [Message{message='there', message_id='9477948c-cb28-47f3-8386-15e8a3a79fc9', recieve_id=25, counter_num=2, sequence_num=2, delivered=true}, Message{message='Arun', message_id='fec264bc-bf08-4fb4-91de-f180546d67e8', recieve_id=27, counter_num=1, sequence_num=4, delivered=true}, Message{message='Hello', message_id='0137c284-66a6-47e9-97e4-c52d810cd54e', recieve_id=25, counter_num=2, sequence_num=1, delivered=true}, Message{message='World', message_id='5d4e3066-703a-4cb1-8458-f86fea5a35a4', recieve_id=26, counter_num=1, sequence_num=3, delivered=true}] 4
+[Message{message='there', message_id='9477948c-cb28-47f3-8386-15e8a3a79fc9', recieve_id=25, counter_num=2, sequence_num=2, delivered=true}, Message{message='Arun', message_id='fec264bc-bf08-4fb4-91de-f180546d67e8', recieve_id=27, counter_num=1, sequence_num=4, delivered=true}, Message{message='Hello', message_id='0137c284-66a6-47e9-97e4-c52d810cd54e', recieve_id=25, counter_num=2, sequence_num=1, delivered=true}, Message{message='World', message_id='5d4e3066-703a-4cb1-8458-f86fea5a35a4', recieve_id=26, counter_num=1, sequence_num=3, delivered=true}]
+Delivered : Message{message='Hello', message_id='0137c284-66a6-47e9-97e4-c52d810cd54e', recieve_id=25, counter_num=2, sequence_num=1, delivered=true}
+Delivered : Message{message='there', message_id='9477948c-cb28-47f3-8386-15e8a3a79fc9', recieve_id=25, counter_num=2, sequence_num=2, delivered=true}
+Delivered : Message{message='World', message_id='5d4e3066-703a-4cb1-8458-f86fea5a35a4', recieve_id=26, counter_num=1, sequence_num=3, delivered=true}
+Delivered : Message{message='Arun', message_id='fec264bc-bf08-4fb4-91de-f180546d67e8', recieve_id=27, counter_num=1, sequence_num=4, delivered=true}
+
 ```
 
+
+#### Output at Process 2
+```$xslt
+"C:\Program Files\Java\jdk1.8.0_181\bin\java.exe" "-javaagent:C:\Program Files\JetBrains\IntelliJ IDEA 2018.3.4\lib\idea_rt.jar=50223:C:\Program Files\JetBrains\IntelliJ IDEA 2018.3.4\bin" -Dfile.encoding=UTF-8 -classpath "C:\Program Files\Java\jdk1.8.0_181\jre\lib\charsets.jar;C:\Program Files\Java\jdk1.8.0_181\jre\lib\deploy.jar;C:\Program Files\Java\jdk1.8.0_181\jre\lib\ext\access-bridge-64.jar;C:\Program Files\Java\jdk1.8.0_181\jre\lib\ext\cldrdata.jar;C:\Program Files\Java\jdk1.8.0_181\jre\lib\ext\dnsns.jar;C:\Program Files\Java\jdk1.8.0_181\jre\lib\ext\jaccess.jar;C:\Program Files\Java\jdk1.8.0_181\jre\lib\ext\jfxrt.jar;C:\Program Files\Java\jdk1.8.0_181\jre\lib\ext\localedata.jar;C:\Program Files\Java\jdk1.8.0_181\jre\lib\ext\nashorn.jar;C:\Program Files\Java\jdk1.8.0_181\jre\lib\ext\sunec.jar;C:\Program Files\Java\jdk1.8.0_181\jre\lib\ext\sunjce_provider.jar;C:\Program Files\Java\jdk1.8.0_181\jre\lib\ext\sunmscapi.jar;C:\Program Files\Java\jdk1.8.0_181\jre\lib\ext\sunpkcs11.jar;C:\Program Files\Java\jdk1.8.0_181\jre\lib\ext\zipfs.jar;C:\Program Files\Java\jdk1.8.0_181\jre\lib\javaws.jar;C:\Program Files\Java\jdk1.8.0_181\jre\lib\jce.jar;C:\Program Files\Java\jdk1.8.0_181\jre\lib\jfr.jar;C:\Program Files\Java\jdk1.8.0_181\jre\lib\jfxswt.jar;C:\Program Files\Java\jdk1.8.0_181\jre\lib\jsse.jar;C:\Program Files\Java\jdk1.8.0_181\jre\lib\management-agent.jar;C:\Program Files\Java\jdk1.8.0_181\jre\lib\plugin.jar;C:\Program Files\Java\jdk1.8.0_181\jre\lib\resources.jar;C:\Program Files\Java\jdk1.8.0_181\jre\lib\rt.jar;D:\gitrepos\TotalOrderMain\target\classes;C:\Users\Arun Nekkalapudi\.m2\repository\org\zeromq\jeromq\0.5.1-SNAPSHOT\jeromq-0.5.1-20190219.022537-1.jar;C:\Users\Arun Nekkalapudi\.m2\repository\eu\neilalexander\jnacl\1.0.0\jnacl-1.0.0.jar" Process2
+******************************
+Welcome to Total-Order-Machine
+******************************
+
+This project has been done as a part of Distributed Systems coursework
+(C) 2019 Arun Nekkalapudi <anekkal@iu.edu>, Indiana University Bloomington.
+
+[PROCESS_ID] : 26
+[NEW MESSAGE RECIEVED] : 2019-03-22 17:51:04.599 Message{message='Hello', message_id='0137c284-66a6-47e9-97e4-c52d810cd54e', recieve_id=25, counter_num=2, sequence_num=0, delivered=false}
+[NEW MESSAGE RECIEVED] : 2019-03-22 17:51:05.259 Message{message='there', message_id='9477948c-cb28-47f3-8386-15e8a3a79fc9', recieve_id=25, counter_num=2, sequence_num=0, delivered=false}
+Final sequence has been received
+[MESSAGE TO BE UPDATED]Message{message='Hello', message_id='0137c284-66a6-47e9-97e4-c52d810cd54e', recieve_id=25, counter_num=2, sequence_num=0, delivered=false}
+[FINAL_SEQUENCE] : MessageS{message_id='0137c284-66a6-47e9-97e4-c52d810cd54e', suggested_pid=26, suggested_sno=1}
+All table values : [Message{message='there', message_id='9477948c-cb28-47f3-8386-15e8a3a79fc9', recieve_id=25, counter_num=2, sequence_num=0, delivered=false}, Message{message='Hello', message_id='0137c284-66a6-47e9-97e4-c52d810cd54e', recieve_id=25, counter_num=2, sequence_num=1, delivered=true}] 2
+[Message{message='there', message_id='9477948c-cb28-47f3-8386-15e8a3a79fc9', recieve_id=25, counter_num=2, sequence_num=0, delivered=false}, Message{message='Hello', message_id='0137c284-66a6-47e9-97e4-c52d810cd54e', recieve_id=25, counter_num=2, sequence_num=1, delivered=true}]
+Final sequence has been received
+[MESSAGE TO BE UPDATED]Message{message='there', message_id='9477948c-cb28-47f3-8386-15e8a3a79fc9', recieve_id=25, counter_num=2, sequence_num=0, delivered=false}
+[FINAL_SEQUENCE] : MessageS{message_id='9477948c-cb28-47f3-8386-15e8a3a79fc9', suggested_pid=26, suggested_sno=2}
+All table values : [Message{message='there', message_id='9477948c-cb28-47f3-8386-15e8a3a79fc9', recieve_id=25, counter_num=2, sequence_num=2, delivered=true}, Message{message='Hello', message_id='0137c284-66a6-47e9-97e4-c52d810cd54e', recieve_id=25, counter_num=2, sequence_num=1, delivered=true}] 2
+[Message{message='there', message_id='9477948c-cb28-47f3-8386-15e8a3a79fc9', recieve_id=25, counter_num=2, sequence_num=2, delivered=true}, Message{message='Hello', message_id='0137c284-66a6-47e9-97e4-c52d810cd54e', recieve_id=25, counter_num=2, sequence_num=1, delivered=true}]
+Delivered : Message{message='Hello', message_id='0137c284-66a6-47e9-97e4-c52d810cd54e', recieve_id=25, counter_num=2, sequence_num=1, delivered=true}
+Delivered : Message{message='there', message_id='9477948c-cb28-47f3-8386-15e8a3a79fc9', recieve_id=25, counter_num=2, sequence_num=2, delivered=true}
+[MESSAGE MULTICAST] : 2019-03-22 17:51:07.047 Message{message='World', message_id='5d4e3066-703a-4cb1-8458-f86fea5a35a4', recieve_id=26, counter_num=1, sequence_num=2, delivered=false}
+[NEW REPLY MESSAGE RECIEVED] : 2019-03-22 17:51:08.02 MessageR{sequence_no=3, message_uid='5d4e3066-703a-4cb1-8458-f86fea5a35a4', process_id=27}
+[NEW REPLY MESSAGE RECIEVED] : 2019-03-22 17:51:08.12 MessageR{sequence_no=3, message_uid='5d4e3066-703a-4cb1-8458-f86fea5a35a4', process_id=25}
+All the feedback messages have been recieved
+Propose Sequence No : MessageR{sequence_no=3, message_uid='5d4e3066-703a-4cb1-8458-f86fea5a35a4', process_id=25}
+MessageS{message_id='5d4e3066-703a-4cb1-8458-f86fea5a35a4', suggested_pid=25, suggested_sno=3}
+Final sequence has been received
+[MESSAGE TO BE UPDATED]Message{message='World', message_id='5d4e3066-703a-4cb1-8458-f86fea5a35a4', recieve_id=26, counter_num=1, sequence_num=2, delivered=false}
+[FINAL_SEQUENCE] : MessageS{message_id='5d4e3066-703a-4cb1-8458-f86fea5a35a4', suggested_pid=25, suggested_sno=3}
+All table values : [Message{message='there', message_id='9477948c-cb28-47f3-8386-15e8a3a79fc9', recieve_id=25, counter_num=2, sequence_num=2, delivered=true}, Message{message='Hello', message_id='0137c284-66a6-47e9-97e4-c52d810cd54e', recieve_id=25, counter_num=2, sequence_num=1, delivered=true}, Message{message='World', message_id='5d4e3066-703a-4cb1-8458-f86fea5a35a4', recieve_id=26, counter_num=1, sequence_num=3, delivered=true}] 3
+[Message{message='there', message_id='9477948c-cb28-47f3-8386-15e8a3a79fc9', recieve_id=25, counter_num=2, sequence_num=2, delivered=true}, Message{message='Hello', message_id='0137c284-66a6-47e9-97e4-c52d810cd54e', recieve_id=25, counter_num=2, sequence_num=1, delivered=true}, Message{message='World', message_id='5d4e3066-703a-4cb1-8458-f86fea5a35a4', recieve_id=26, counter_num=1, sequence_num=3, delivered=true}]
+Delivered : Message{message='Hello', message_id='0137c284-66a6-47e9-97e4-c52d810cd54e', recieve_id=25, counter_num=2, sequence_num=1, delivered=true}
+Delivered : Message{message='there', message_id='9477948c-cb28-47f3-8386-15e8a3a79fc9', recieve_id=25, counter_num=2, sequence_num=2, delivered=true}
+Delivered : Message{message='World', message_id='5d4e3066-703a-4cb1-8458-f86fea5a35a4', recieve_id=26, counter_num=1, sequence_num=3, delivered=true}
+[NEW MESSAGE RECIEVED] : 2019-03-22 17:51:09.851 Message{message='Arun', message_id='fec264bc-bf08-4fb4-91de-f180546d67e8', recieve_id=27, counter_num=1, sequence_num=3, delivered=false}
+Final sequence has been received
+[MESSAGE TO BE UPDATED]Message{message='Arun', message_id='fec264bc-bf08-4fb4-91de-f180546d67e8', recieve_id=27, counter_num=1, sequence_num=3, delivered=false}
+[FINAL_SEQUENCE] : MessageS{message_id='fec264bc-bf08-4fb4-91de-f180546d67e8', suggested_pid=25, suggested_sno=4}
+All table values : [Message{message='there', message_id='9477948c-cb28-47f3-8386-15e8a3a79fc9', recieve_id=25, counter_num=2, sequence_num=2, delivered=true}, Message{message='Arun', message_id='fec264bc-bf08-4fb4-91de-f180546d67e8', recieve_id=27, counter_num=1, sequence_num=4, delivered=true}, Message{message='Hello', message_id='0137c284-66a6-47e9-97e4-c52d810cd54e', recieve_id=25, counter_num=2, sequence_num=1, delivered=true}, Message{message='World', message_id='5d4e3066-703a-4cb1-8458-f86fea5a35a4', recieve_id=26, counter_num=1, sequence_num=3, delivered=true}] 4
+[Message{message='there', message_id='9477948c-cb28-47f3-8386-15e8a3a79fc9', recieve_id=25, counter_num=2, sequence_num=2, delivered=true}, Message{message='Arun', message_id='fec264bc-bf08-4fb4-91de-f180546d67e8', recieve_id=27, counter_num=1, sequence_num=4, delivered=true}, Message{message='Hello', message_id='0137c284-66a6-47e9-97e4-c52d810cd54e', recieve_id=25, counter_num=2, sequence_num=1, delivered=true}, Message{message='World', message_id='5d4e3066-703a-4cb1-8458-f86fea5a35a4', recieve_id=26, counter_num=1, sequence_num=3, delivered=true}]
+Delivered : Message{message='Hello', message_id='0137c284-66a6-47e9-97e4-c52d810cd54e', recieve_id=25, counter_num=2, sequence_num=1, delivered=true}
+Delivered : Message{message='there', message_id='9477948c-cb28-47f3-8386-15e8a3a79fc9', recieve_id=25, counter_num=2, sequence_num=2, delivered=true}
+Delivered : Message{message='World', message_id='5d4e3066-703a-4cb1-8458-f86fea5a35a4', recieve_id=26, counter_num=1, sequence_num=3, delivered=true}
+Delivered : Message{message='Arun', message_id='fec264bc-bf08-4fb4-91de-f180546d67e8', recieve_id=27, counter_num=1, sequence_num=4, delivered=true}
+
+```
+
+
+#### Output at Process 3
+
+```$xslt
+"C:\Program Files\Java\jdk1.8.0_181\bin\java.exe" "-javaagent:C:\Program Files\JetBrains\IntelliJ IDEA 2018.3.4\lib\idea_rt.jar=50228:C:\Program Files\JetBrains\IntelliJ IDEA 2018.3.4\bin" -Dfile.encoding=UTF-8 -classpath "C:\Program Files\Java\jdk1.8.0_181\jre\lib\charsets.jar;C:\Program Files\Java\jdk1.8.0_181\jre\lib\deploy.jar;C:\Program Files\Java\jdk1.8.0_181\jre\lib\ext\access-bridge-64.jar;C:\Program Files\Java\jdk1.8.0_181\jre\lib\ext\cldrdata.jar;C:\Program Files\Java\jdk1.8.0_181\jre\lib\ext\dnsns.jar;C:\Program Files\Java\jdk1.8.0_181\jre\lib\ext\jaccess.jar;C:\Program Files\Java\jdk1.8.0_181\jre\lib\ext\jfxrt.jar;C:\Program Files\Java\jdk1.8.0_181\jre\lib\ext\localedata.jar;C:\Program Files\Java\jdk1.8.0_181\jre\lib\ext\nashorn.jar;C:\Program Files\Java\jdk1.8.0_181\jre\lib\ext\sunec.jar;C:\Program Files\Java\jdk1.8.0_181\jre\lib\ext\sunjce_provider.jar;C:\Program Files\Java\jdk1.8.0_181\jre\lib\ext\sunmscapi.jar;C:\Program Files\Java\jdk1.8.0_181\jre\lib\ext\sunpkcs11.jar;C:\Program Files\Java\jdk1.8.0_181\jre\lib\ext\zipfs.jar;C:\Program Files\Java\jdk1.8.0_181\jre\lib\javaws.jar;C:\Program Files\Java\jdk1.8.0_181\jre\lib\jce.jar;C:\Program Files\Java\jdk1.8.0_181\jre\lib\jfr.jar;C:\Program Files\Java\jdk1.8.0_181\jre\lib\jfxswt.jar;C:\Program Files\Java\jdk1.8.0_181\jre\lib\jsse.jar;C:\Program Files\Java\jdk1.8.0_181\jre\lib\management-agent.jar;C:\Program Files\Java\jdk1.8.0_181\jre\lib\plugin.jar;C:\Program Files\Java\jdk1.8.0_181\jre\lib\resources.jar;C:\Program Files\Java\jdk1.8.0_181\jre\lib\rt.jar;D:\gitrepos\TotalOrderMain\target\classes;C:\Users\Arun Nekkalapudi\.m2\repository\org\zeromq\jeromq\0.5.1-SNAPSHOT\jeromq-0.5.1-20190219.022537-1.jar;C:\Users\Arun Nekkalapudi\.m2\repository\eu\neilalexander\jnacl\1.0.0\jnacl-1.0.0.jar" Process3
+******************************
+Welcome to Total-Order-Machine
+******************************
+
+This project has been done as a part of Distributed Systems coursework
+(C) 2019 Arun Nekkalapudi <anekkal@iu.edu>, Indiana University Bloomington.
+
+[PROCESS_ID] : 27
+[NEW MESSAGE RECIEVED] : 2019-03-22 17:51:04.604 Message{message='Hello', message_id='0137c284-66a6-47e9-97e4-c52d810cd54e', recieve_id=25, counter_num=2, sequence_num=0, delivered=false}
+[NEW MESSAGE RECIEVED] : 2019-03-22 17:51:05.047 Message{message='there', message_id='9477948c-cb28-47f3-8386-15e8a3a79fc9', recieve_id=25, counter_num=2, sequence_num=0, delivered=false}
+Final sequence has been received
+[MESSAGE TO BE UPDATED]Message{message='Hello', message_id='0137c284-66a6-47e9-97e4-c52d810cd54e', recieve_id=25, counter_num=2, sequence_num=0, delivered=false}
+[FINAL_SEQUENCE] : MessageS{message_id='0137c284-66a6-47e9-97e4-c52d810cd54e', suggested_pid=26, suggested_sno=1}
+All table values : [Message{message='there', message_id='9477948c-cb28-47f3-8386-15e8a3a79fc9', recieve_id=25, counter_num=2, sequence_num=0, delivered=false}, Message{message='Hello', message_id='0137c284-66a6-47e9-97e4-c52d810cd54e', recieve_id=25, counter_num=2, sequence_num=1, delivered=true}] 2
+[Message{message='there', message_id='9477948c-cb28-47f3-8386-15e8a3a79fc9', recieve_id=25, counter_num=2, sequence_num=0, delivered=false}, Message{message='Hello', message_id='0137c284-66a6-47e9-97e4-c52d810cd54e', recieve_id=25, counter_num=2, sequence_num=1, delivered=true}]
+Final sequence has been received
+[MESSAGE TO BE UPDATED]Message{message='there', message_id='9477948c-cb28-47f3-8386-15e8a3a79fc9', recieve_id=25, counter_num=2, sequence_num=0, delivered=false}
+[FINAL_SEQUENCE] : MessageS{message_id='9477948c-cb28-47f3-8386-15e8a3a79fc9', suggested_pid=26, suggested_sno=2}
+All table values : [Message{message='there', message_id='9477948c-cb28-47f3-8386-15e8a3a79fc9', recieve_id=25, counter_num=2, sequence_num=2, delivered=true}, Message{message='Hello', message_id='0137c284-66a6-47e9-97e4-c52d810cd54e', recieve_id=25, counter_num=2, sequence_num=1, delivered=true}] 2
+[Message{message='there', message_id='9477948c-cb28-47f3-8386-15e8a3a79fc9', recieve_id=25, counter_num=2, sequence_num=2, delivered=true}, Message{message='Hello', message_id='0137c284-66a6-47e9-97e4-c52d810cd54e', recieve_id=25, counter_num=2, sequence_num=1, delivered=true}]
+Delivered : Message{message='Hello', message_id='0137c284-66a6-47e9-97e4-c52d810cd54e', recieve_id=25, counter_num=2, sequence_num=1, delivered=true}
+Delivered : Message{message='there', message_id='9477948c-cb28-47f3-8386-15e8a3a79fc9', recieve_id=25, counter_num=2, sequence_num=2, delivered=true}
+[NEW MESSAGE RECIEVED] : 2019-03-22 17:51:07.142 Message{message='World', message_id='5d4e3066-703a-4cb1-8458-f86fea5a35a4', recieve_id=26, counter_num=1, sequence_num=2, delivered=false}
+Final sequence has been received
+[MESSAGE TO BE UPDATED]Message{message='World', message_id='5d4e3066-703a-4cb1-8458-f86fea5a35a4', recieve_id=26, counter_num=1, sequence_num=2, delivered=false}
+[FINAL_SEQUENCE] : MessageS{message_id='5d4e3066-703a-4cb1-8458-f86fea5a35a4', suggested_pid=25, suggested_sno=3}
+All table values : [Message{message='there', message_id='9477948c-cb28-47f3-8386-15e8a3a79fc9', recieve_id=25, counter_num=2, sequence_num=2, delivered=true}, Message{message='Hello', message_id='0137c284-66a6-47e9-97e4-c52d810cd54e', recieve_id=25, counter_num=2, sequence_num=1, delivered=true}, Message{message='World', message_id='5d4e3066-703a-4cb1-8458-f86fea5a35a4', recieve_id=26, counter_num=1, sequence_num=3, delivered=true}] 3
+[Message{message='there', message_id='9477948c-cb28-47f3-8386-15e8a3a79fc9', recieve_id=25, counter_num=2, sequence_num=2, delivered=true}, Message{message='Hello', message_id='0137c284-66a6-47e9-97e4-c52d810cd54e', recieve_id=25, counter_num=2, sequence_num=1, delivered=true}, Message{message='World', message_id='5d4e3066-703a-4cb1-8458-f86fea5a35a4', recieve_id=26, counter_num=1, sequence_num=3, delivered=true}]
+Delivered : Message{message='Hello', message_id='0137c284-66a6-47e9-97e4-c52d810cd54e', recieve_id=25, counter_num=2, sequence_num=1, delivered=true}
+Delivered : Message{message='there', message_id='9477948c-cb28-47f3-8386-15e8a3a79fc9', recieve_id=25, counter_num=2, sequence_num=2, delivered=true}
+Delivered : Message{message='World', message_id='5d4e3066-703a-4cb1-8458-f86fea5a35a4', recieve_id=26, counter_num=1, sequence_num=3, delivered=true}
+[MESSAGE MULTICAST] : 2019-03-22 17:51:09.317 Message{message='Arun', message_id='fec264bc-bf08-4fb4-91de-f180546d67e8', recieve_id=27, counter_num=1, sequence_num=3, delivered=false}
+[NEW REPLY MESSAGE RECIEVED] : 2019-03-22 17:51:10.102 MessageR{sequence_no=4, message_uid='fec264bc-bf08-4fb4-91de-f180546d67e8', process_id=25}
+[NEW REPLY MESSAGE RECIEVED] : 2019-03-22 17:51:10.767 MessageR{sequence_no=4, message_uid='fec264bc-bf08-4fb4-91de-f180546d67e8', process_id=26}
+All the feedback messages have been recieved
+Propose Sequence No : MessageR{sequence_no=4, message_uid='fec264bc-bf08-4fb4-91de-f180546d67e8', process_id=25}
+MessageS{message_id='fec264bc-bf08-4fb4-91de-f180546d67e8', suggested_pid=25, suggested_sno=4}
+Final sequence has been received
+[MESSAGE TO BE UPDATED]Message{message='Arun', message_id='fec264bc-bf08-4fb4-91de-f180546d67e8', recieve_id=27, counter_num=1, sequence_num=3, delivered=false}
+[FINAL_SEQUENCE] : MessageS{message_id='fec264bc-bf08-4fb4-91de-f180546d67e8', suggested_pid=25, suggested_sno=4}
+All table values : [Message{message='there', message_id='9477948c-cb28-47f3-8386-15e8a3a79fc9', recieve_id=25, counter_num=2, sequence_num=2, delivered=true}, Message{message='Arun', message_id='fec264bc-bf08-4fb4-91de-f180546d67e8', recieve_id=27, counter_num=1, sequence_num=4, delivered=true}, Message{message='Hello', message_id='0137c284-66a6-47e9-97e4-c52d810cd54e', recieve_id=25, counter_num=2, sequence_num=1, delivered=true}, Message{message='World', message_id='5d4e3066-703a-4cb1-8458-f86fea5a35a4', recieve_id=26, counter_num=1, sequence_num=3, delivered=true}] 4
+[Message{message='there', message_id='9477948c-cb28-47f3-8386-15e8a3a79fc9', recieve_id=25, counter_num=2, sequence_num=2, delivered=true}, Message{message='Arun', message_id='fec264bc-bf08-4fb4-91de-f180546d67e8', recieve_id=27, counter_num=1, sequence_num=4, delivered=true}, Message{message='Hello', message_id='0137c284-66a6-47e9-97e4-c52d810cd54e', recieve_id=25, counter_num=2, sequence_num=1, delivered=true}, Message{message='World', message_id='5d4e3066-703a-4cb1-8458-f86fea5a35a4', recieve_id=26, counter_num=1, sequence_num=3, delivered=true}]
+Delivered : Message{message='Hello', message_id='0137c284-66a6-47e9-97e4-c52d810cd54e', recieve_id=25, counter_num=2, sequence_num=1, delivered=true}
+Delivered : Message{message='there', message_id='9477948c-cb28-47f3-8386-15e8a3a79fc9', recieve_id=25, counter_num=2, sequence_num=2, delivered=true}
+Delivered : Message{message='World', message_id='5d4e3066-703a-4cb1-8458-f86fea5a35a4', recieve_id=26, counter_num=1, sequence_num=3, delivered=true}
+Delivered : Message{message='Arun', message_id='fec264bc-bf08-4fb4-91de-f180546d67e8', recieve_id=27, counter_num=1, sequence_num=4, delivered=true}
+
+```
 This project has been done as a part of Distributed Systems coursework
 (C) 2019 Arun Nekkalapudi <anekkal@iu.edu>, Indiana University Bloomington.

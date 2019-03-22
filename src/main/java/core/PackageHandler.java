@@ -2,17 +2,27 @@ package core;
 
 import common.Message;
 import common.MessageR;
+import common.MessageS;
 
 import java.io.Serializable;
 
 public class PackageHandler implements Serializable {
     private final PackageType pt;
+    private MessageS ms;
     private MessageR mr;
     private Message m;
     private String message_data;
 
     public PackageHandler(PackageType pt) {
         this.pt = pt;
+    }
+
+    public MessageS getMs() {
+        return ms;
+    }
+
+    public void setMs(MessageS ms) {
+        this.ms = ms;
     }
 
     public MessageR getMr() {

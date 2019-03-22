@@ -21,5 +21,8 @@ public class Process1 {
 
         Thread t2 = new Thread(new MulticastS("Hello", state));
         t2.start();
+
+        Thread t3 = new Thread(new MulticastS("there", state));
+        t3.start();
     }
 }

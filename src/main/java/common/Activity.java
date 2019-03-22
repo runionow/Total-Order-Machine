@@ -53,7 +53,7 @@ public class Activity implements Serializable {
     }
 
     public void bufferMessage(Message m) {
-        this.table.put(m.getMessage(), m);
+        this.table.put(m.getMessage_id(), m);
     }
 
     // Sort the buffer such that the value with lowest sequence stays on the top

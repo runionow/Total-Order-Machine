@@ -5,5 +5,6 @@ package core;
  */
 public enum PackageType {
     BROADCAST_MESSAGE,
-    REPLY_BROADCAST
+    REPLY_BROADCAST,
+    FINAL_SEQUENCE
 }

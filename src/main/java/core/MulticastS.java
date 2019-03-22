@@ -3,6 +3,7 @@ package core;
 import common.Activity;
 import common.Message;
 import common.MessageR;
+import common.MessageS;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -19,6 +20,7 @@ public class MulticastS implements Runnable {
     private String message;
     private Activity activity;
     private MessageR message_send;
+    private MessageS message_seq_send;
 
     public MulticastS(String message1, Activity activity) {
         this.message = message1;
@@ -28,6 +30,10 @@ public class MulticastS implements Runnable {
 
     public MulticastS(MessageR m) {
         this.message_send = m;
+    }
+
+    public MulticastS(MessageS m) {
+        this.message_seq_send = m;
     }
 
     private void initialize() {
@@ -89,7 +95,7 @@ public class MulticastS implements Runnable {
         socket.close();
     }
 
-    // Use this method only for sending responses
+    // Use this method only for sending final sequences
     public void sendResponseMessage() {
         initialize();
         try {
@@ -113,6 +119,29 @@ public class MulticastS implements Runnable {
             e.printStackTrace();
         }
 
+    }
+
+    public void sendFinalSequence() {
+        if (this.message_seq_send != null) {
+            initialize();
+            PackageHandler pkg = new PackageHandler(PackageType.FINAL_SEQUENCE);
+            pkg.setMs(this.message_seq_send);
+            System.out.println(this.message_seq_send.toString());
+            byte[] serializedMessage = generateOutputStream(pkg);
+
+            DatagramPacket packet = new DatagramPacket(serializedMessage,
+                    serializedMessage.length,
+                    group,
+                    4446);
+
+            try {
+                socket.send(packet);
+            } catch (IOException e) {
+                System.out.println("FAILED TO SEND FINAL SEQUENCE_BROADCAST MESSAGE");
+                e.printStackTrace();
+            }
+
+        }
     }
 
     // Generate byte stream
